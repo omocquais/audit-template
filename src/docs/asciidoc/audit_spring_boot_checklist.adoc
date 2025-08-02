@@ -1,0 +1,134 @@
+
+= Audit de Code – Application Spring Boot
+:toc:
+:toclevels: 3
+
+== 1. Structure du projet
+
+* [ ] Respect des conventions Maven/Gradle.
+* [ ] Séparation claire entre les couches (Controller, Service, Repository, Domain).
+* [ ] Packages organisés (`com.example.project...`).
+* [ ] Modularité (multi-modules si nécessaire).
+
+Remarques:
+
+== 2. Qualité du code
+
+* [ ] Respect des principes SOLID, DRY, KISS, YAGNI.
+* [ ] Pas de code dupliqué.
+* [ ] Complexité cyclomatique maîtrisée.
+* [ ] Lisibilité et clarté des noms.
+* [ ] Gestion appropriée des exceptions (pas de `catch` vide ou générique).
+* [ ] Pas de code mort.
+* [ ] Utilisation appropriée de Lombok (si présent).
+
+- Remarques:
+
+== 3. Sécurité
+
+* [ ] Validation des entrées utilisateurs.
+* [ ] Pas de données sensibles en clair dans le code ou les logs.
+* [ ] Configuration Spring Security correcte (si utilisé).
+* [ ] Dépendances vérifiées (OWASP, Snyk).
+* [ ] Protection contre les injections (SQL, XSS...).
+
+- Remarques:
+
+== 4. Gestion des dépendances
+
+* [ ] Suppression des dépendances inutilisées.
+* [ ] Versions à jour et stables.
+* [ ] Utilisation cohérente des starters Spring Boot.
+
+- Remarques:
+
+== 5. Configuration
+
+* [ ] Pas de secrets ou mots de passe en dur (`application.properties`).
+* [ ] Utilisation correcte des profils (`application-dev.yml`, `application-prod.yml`).
+* [ ] Externalisation des configs sensibles (Vault, AWS Secrets Manager...).
+
+- Remarques:
+
+== 6. Tests
+
+* [ ] Présence de tests unitaires et d’intégration.
+* [ ] Couverture de code mesurée (Jacoco).
+* [ ] Tests clairs, isolés et non dépendants d'environnements réels.
+* [ ] Tests dans les bonnes couches (pas uniquement via contrôleurs).
+
+- Remarques:
+
+== 7. Performance
+
+* [ ] Pas de requêtes N+1 (fetch LAZY/EAGER bien configuré).
+* [ ] Utilisation correcte de `@Transactional`.
+* [ ] Pas de traitements lourds dans les contrôleurs.
+* [ ] Temps de démarrage maîtrisé.
+
+- Remarques:
+
+== 8. API REST
+
+* [ ] Bon usage des annotations Spring MVC (`@RestController`, `@GetMapping`...).
+* [ ] Gestion des erreurs via `@ControllerAdvice`.
+* [ ] Réponses structurées (DTOs, pagination...).
+* [ ] Documentation Swagger/OpenAPI.
+* [ ] Validation des entrées avec `@Valid`.
+
+- Remarques:
+
+== 9. Logs et Monitoring
+
+* [ ] Logging structuré (SLF4J, Logback).
+* [ ] Pas de stacktraces en prod.
+* [ ] Intégration Actuator / Prometheus.
+
+- Remarques:
+
+== 10. Utilisation de Spring Boot
+
+* [ ] Usage cohérent des annotations Spring (`@Component`, `@Service`, `@Autowired`).
+* [ ] Bonne gestion du cycle de vie (`@PostConstruct`, `@PreDestroy`).
+* [ ] Spring Data JPA et JpaRepository bien utilisés.
+
+- Remarques:
+
+== 11. Adaptabilité à une architecture hexagonale
+
+* [ ] Le domaine métier est indépendant de Spring (pas d’annotations techniques).
+* [ ] La logique métier est séparée des infrastructures techniques (DB, REST, etc.).
+* [ ] Présence de cas d’usage clairs pouvant devenir des services d’application.
+* [ ] Testabilité du domaine sans démarrage de Spring.
+* [ ] Possibilité de réorganiser les packages comme suit :
+
+[source]
+----
+com.example.project
+ ├── application       // Services applicatifs (use cases)
+ │    └── service
+ ├── domain            // Logique métier pure
+ │    ├── model
+ │    ├── service
+ │    └── port
+ │        ├── in       // Ports d'entrée
+ │        └── out      // Ports de sortie
+ ├── infrastructure    // Implémentations techniques (DB, API...)
+ │    ├── persistence
+ │    ├── api
+ │    └── mail
+ ├── adapter           // Adaptateurs (REST, CLI, Messaging...)
+ │    ├── rest
+ │    └── messaging
+ └── config            // Configurations Spring
+----
+
+- Remarques:
+
+== Conclusion
+
+* 🌟 Adaptabilité élevée : Migration naturelle vers une architecture hexagonale.
+* ⚠️ Adaptabilité moyenne : Refactoring modéré nécessaire.
+* ❌ Adaptabilité faible : Refactoring important requis.
+
+Synthèse et recommandations::

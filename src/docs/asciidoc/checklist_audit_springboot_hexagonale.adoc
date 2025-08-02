@@ -1,0 +1,139 @@
+
+= Checklist d'Audit de Code - Application Spring Boot
+:toc:
+:toclevels: 2
+
+== 1. Structure du Projet
+
+* [ ] Respect des conventions Maven/Gradle.
+* [ ] Séparation claire entre les couches (Controller, Service, Repository, Domain).
+* [ ] Bonne organisation des packages (`com.example.project...`).
+* [ ] Modularité (si projet multi-modules).
+
+Remarques :
+
+== 2. Qualité du Code
+
+* [ ] Respect des principes SOLID, DRY, KISS, YAGNI.
+* [ ] Absence de code dupliqué ou mort.
+* [ ] Complexité cyclomatique maîtrisée.
+* [ ] Nommage clair des variables, classes et méthodes.
+* [ ] Gestion appropriée des exceptions (pas de `catch` silencieux).
+* [ ] Bonne utilisation de Lombok (si présent).
+
+Remarques :
+
+== 3. Sécurité
+
+* [ ] Validation des entrées utilisateurs.
+* [ ] Pas de données sensibles en clair dans le code ou les logs.
+* [ ] Configuration sécurisée de Spring Security (si utilisée).
+* [ ] Dépendances vérifiées contre les vulnérabilités (OWASP, Snyk).
+* [ ] Protection contre les injections (SQL, XSS, etc.).
+
+Remarques :
+
+== 4. Gestion des Dépendances
+
+* [ ] Suppression des dépendances inutilisées.
+* [ ] Versions à jour (pas de versions obsolètes ou vulnérables).
+* [ ] Usage cohérent des starters Spring Boot.
+* [ ] Pas de versions hardcodées inutiles dans `pom.xml` ou `build.gradle`.
+
+Remarques :
+
+== 5. Configuration
+
+* [ ] Pas de mots de passe ou clés API dans `application.properties` ou `application.yml`.
+* [ ] Utilisation des profils (`application-dev.yml`, `application-prod.yml`).
+* [ ] Externalisation des configurations sensibles (Vault, AWS Secrets Manager, etc.).
+* [ ] Fichiers de config bien organisés.
+
+Remarques :
+
+== 6. Tests
+
+* [ ] Présence de tests unitaires et d'intégration.
+* [ ] Couverture de code acceptable (Jacoco, par ex.).
+* [ ] Tests automatisés bien nommés et isolés.
+* [ ] Pas de dépendances directes sur des environnements externes.
+* [ ] Tests alignés sur les bonnes couches (contrôleur vs. service).
+
+Remarques :
+
+== 7. Performance
+
+* [ ] Absence de requêtes N+1 (optimisation des relations JPA).
+* [ ] Utilisation appropriée de `@Transactional`.
+* [ ] Pas de traitements lourds dans les contrôleurs.
+* [ ] Pas de boucles imbriquées inefficaces.
+* [ ] Temps de démarrage de l’application maîtrisé.
+
+Remarques :
+
+== 8. API REST
+
+* [ ] Bon usage des annotations Spring MVC (`@RestController`, `@GetMapping`, etc.).
+* [ ] Gestion correcte des erreurs avec `@ControllerAdvice`.
+* [ ] Réponses cohérentes (DTO, pagination).
+* [ ] Documentation via Swagger/OpenAPI.
+* [ ] Validation des entrées (`@Valid`, `@NotNull`).
+
+Remarques :
+
+== 9. Logs et Monitoring
+
+* [ ] Logging structuré via SLF4J/Logback.
+* [ ] Pas de stacktraces en production.
+* [ ] Intégration avec des outils de monitoring (Actuator, Prometheus).
+* [ ] Bon usage de `@Slf4j` et des niveaux de logs.
+
+Remarques :
+
+== 10. Utilisation de Spring Boot
+
+* [ ] Utilisation cohérente des annotations (`@Component`, `@Service`, etc.).
+* [ ] Pas de dépendances inutiles à Spring.
+* [ ] Bon usage de Spring Data JPA et des `JpaRepository`.
+* [ ] Bonne gestion du cycle de vie des beans (PostConstruct/PreDestroy).
+
+Remarques :
+
+== 11. Adaptabilité à l'Architecture Hexagonale
+
+* [ ] La logique métier est indépendante de Spring (pas d’`@Autowired`, `@Transactional` dans le domaine).
+* [ ] Séparation claire des responsabilités entre domaine, application, infrastructure et interfaces.
+* [ ] Tests unitaires possibles sur le domaine sans Spring.
+* [ ] Possibilité d’identifier des cas d’usage (application services).
+* [ ] Accès techniques encapsulés via des ports (`in`/`out`).
+
+=== Structure de Packages Recommandée
+----
+com.example.project
+├── application        // Services d'application (use cases)
+│   └── service
+├── domain             // Logique métier (entités, services, ports)
+│   ├── model
+│   ├── service
+│   └── port
+│       ├── in
+│       └── out
+├── infrastructure     // Implémentations techniques
+│   ├── persistence
+│   ├── api
+│   └── mail
+├── adapter            // Adaptateurs (REST, Messaging...)
+│   ├── rest
+│   └── messaging
+└── config             // Configuration Spring
+----
+
+Remarques :
+
+== Conclusion Générale
+
+* **Adaptabilité élevée** : Migration naturelle vers une architecture hexagonale.
+* **Adaptabilité moyenne** : Refactoring modéré requis.
+* **Adaptabilité faible** : Refactoring important nécessaire.
+
+Synthèse et recommandations :
