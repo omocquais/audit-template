@@ -1,0 +1,254 @@
+= Audit technique – Application Spring Boot
+:revdate: {localdate}
+:auditeur: __________________
+:version: __________________
+
+== Contexte
+* Nom du projet : __________________
+* Repo / branche auditée : __________________
+* Version Java / Spring Boot : __________________
+* Build (Maven/Gradle) : __________________
+* Environnement(s) ciblé(s) : Dev / QA / Prod
+
+== Synthèse exécutive
+* Forces : ________________________________________________________________
+* Risques majeurs : _______________________________________________________
+* Actions prioritaires (Top 5) :
+** [ ] _________________________________________________________________
+** [ ] _________________________________________________________________
+** [ ] _________________________________________________________________
+** [ ] _________________________________________________________________
+** [ ] _________________________________________________________________
+
+== 1. Santé du projet
+=== 1.1 Build & dépendances
+* [ ] Build reproductible (versions figées, pas de ranges)
+* [ ] Spring Boot Starter Parent / plugin management propre
+* [ ] Dépendances minimales, pas de bibliothèques redondantes
+* [ ] Dépendances vulnérables détectées (OWASP, Snyk, Dependabot)
+* [ ] Profils Maven/Gradle utilisés à bon escient
+* [ ] Packaging (jar/war) conforme ; couche exécutable claire
+
+=== 1.2 Qualité & style
+* [ ] Formatage automatisé (Spotless/Google Java Format)
+* [ ] Analyse statique (Checkstyle/PMD/SpotBugs)
+* [ ] SonarQube/SonarCloud configuré (Quality Gate)
+* [ ] Couverture de tests ≥ __% (unitaires) ; ≥ __% (integ)
+
+=== 1.3 CI/CD
+* [ ] Pipeline CI (build, tests, lint, security scan)
+* [ ] Artifacts versionnés & signés
+* [ ] Promotion par environnement (Dev → QA → Prod)
+* [ ] Stratégie de déploiement (blue/green, canary) documentée
+
+== 2. Configuration & sécurité
+=== 2.1 Configuration
+* [ ] `application.yml` clair (pas d’overrides implicites)
+* [ ] Profils Spring (`dev`, `test`, `prod`) cohérents
+* [ ] Variables d’environnement prioritaires en prod
+* [ ] Paramètres sensibles externalisés (pas dans le repo)
+* [ ] Chiffrement (Spring Cloud Config + Vault / JCE) si nécessaire
+
+=== 2.2 Sécurité
+* [ ] Spring Security en place (filtres, chaines)
+* [ ] AuthN/AuthZ (JWT/OAuth2/OPA) documentées
+* [ ] Politiques CORS strictes
+* [ ] En-têtes HTTP de sécurité (HSTS, CSP, X-Content-Type-Options)
+* [ ] Validation d’entrée (Bean Validation) systématique
+* [ ] Gestion des secrets (Vault/SM) – rotation, TTL
+* [ ] Surfaces d’attaque minimisées (Actuator verrouillé)
+
+== 3. Observabilité & exploitation
+* [ ] Spring Boot Actuator activé (endpoints pertinents)
+* [ ] Métriques Micrometer (CPU, JVM, business) exportées (Prometheus/OTel)
+* [ ] Traces distribuées (W3C TraceContext / OpenTelemetry)
+* [ ] Logs structurés (JSON) + corrélation (traceId/spanId)
+* [ ] Niveaux de logs maîtrisés par profil
+* [ ] Health checks / readiness / liveness implémentés
+
+== 4. API & contrats
+* [ ] OpenAPI/Swagger généré et à jour
+* [ ] DTO vs entités : pas d’expositions d’entités JPA
+* [ ] Codes HTTP & erreurs (RFC 7807 `application/problem+json`)
+* [ ] Pagination/tri/filtre cohérents
+* [ ] Versionnement d’API (URI/headers) défini
+
+== 5. Données & persistence
+* [ ] JPA/Hibernate : lazy/eager maîtrisés ; N+1 évités
+* [ ] Migrations Flyway/Liquibase versionnées
+* [ ] Index / clés / contraintes vérifiés
+* [ ] Transactions (@Transactional) à la bonne granularité
+* [ ] Requêtes performantes (plans, temps moyen) mesurées
+* [ ] Politique d’archivage/rétention RGPD
+
+== 6. Architecture & conception
+* [ ] Découplage modules (domain <-> infra) ; dépendances dirigées
+* [ ] Règles DDD (agrégats, invariants, value objects)
+* [ ] Gestion d’événements (domain events) si pertinent
+* [ ] Traitements asynchrones (Spring Events, MQ) cadrés
+* [ ] Erreurs : mapping centralisé (ControllerAdvice)
+* [ ] Concurrence : immutabilité, locks, timeouts
+
+== 7. Performance & scalabilité
+* [ ] Benchmarks de base (JMH/local) / tests de charge (k6/Gatling)
+* [ ] Timeouts / retry / circuit breaker (Resilience4j)
+* [ ] Cache (Caffeine/Redis) avec TTL & invalidation
+* [ ] Pooling (Tomcat/Undertow, Hikari) tuné
+* [ ] Démarrage rapide (Spring AOT/native si pertinent)
+
+== 8. Cloud, packaging & run
+* [ ] Dockerfile lean (distroless/temurin-jre), user non-root
+* [ ] Probes K8s (readiness/liveness/startup)
+* [ ] Ressources (CPU/mem) & JVM flags adaptés
+* [ ] ConfigMap/Secret usage ; montages sécurisés
+* [ ] Politique de logs & rotation
+
+== 9. Tests
+* [ ] Pyramide de tests équilibrée (unit, slice, integ, e2e)
+* [ ] Tests Spring `@WebMvcTest`, `@DataJpaTest`, `@SpringBootTest` pertinents
+* [ ] Testcontainers pour ressources externes (DB, MQ)
+* [ ] Données de test réalistes (no PII)
+* [ ] Flakiness contrôlée (timeouts, waits)
+
+== 10. Documentation
+* [ ] README complet (exécution locale, profils, make commands)
+* [ ] Architecture Decision Records (ADR)
+* [ ] Diagrammes C4 / séquence à jour
+* [ ] Runbooks (incident, rollback, feature flags)
+
+== 11. Vérification “quick wins”
+* [ ] Désactiver endpoints Actuator sensibles en prod
+* [ ] Activer compression HTTP et GZIP logs si utile
+* [ ] Uniformiser le mapping des exceptions
+* [ ] Valider strictement les entrées (Bean Validation + messages)
+* [ ] Supprimer code mort, logs verbeux, `TODO` hérités
+
+////
+SECTION HEXAGONALE
+////
+
+== 12. Architecture hexagonale – Faisabilité & plan
+=== 12.1 Est-ce pertinent ici ?
+* Contexte métier stable ?  [ ] Oui  [ ] Non
+* Nombre d’adaptateurs (web, batch, MQ, CLI) justifie la séparation ?  [ ] Oui  [ ] Non
+* Couplage actuel fort entre web/JPA et règles métier ?  [ ] Oui  [ ] Non
+* Équipe familière avec DDD/ports & adapters ?  [ ] Oui  [ ] Non
+* Impacts : dette, refacto progressive possible module par module ?  [ ] Oui  [ ] Non
+* Décision : __Adopter / Piloter / Différer__
+
+=== 12.2 Cible recommandée (packages)
+NOTE: Exemple de conventions de noms (à adapter à votre `groupId`).
+
+[source]
+----
+com.votreorg.votreapp
+  ├─ configuration
+  │    ├─ bootstrap
+  │    └─ security
+  ├─ shared
+  │    ├─ exception
+  │    ├─ util
+  │    └─ mapper
+  ├─ domain
+  │    ├─ model         // entités métier, value objects
+  │    ├─ service       // règles métier (pure Java)
+  │    └─ event         // événements domaine (optionnel)
+  ├─ application
+  │    ├─ port
+  │    │    ├─ in       // interfaces use cases (command/query)
+  │    │    └─ out      // interfaces vers l’extérieur (repo, MQ, API)
+  │    └─ usecase       // orchestrations appelant domain.service
+  └─ infrastructure
+       ├─ adapter
+       │    ├─ in
+       │    │    ├─ web        // contrôleurs REST, DTO API
+       │    │    ├─ messaging  // listeners (Kafka/Rabbit/etc.)
+       │    │    └─ batch      // jobs/schedulers
+       │    └─ out
+       │         ├─ persistence // JPA repositories, mappers ORM
+       │         ├─ external    // clients REST/GraphQL, feign/webclient
+       │         └─ file        // stockage fichiers, S3, etc.
+       └─ config      // beans techniques (DataSource, Jackson, etc.)
+----
+
+* Règles :
+** [ ] `domain` ne dépend de personne (pure Java, pas d’annotation Spring)
+** [ ] `application` dépend de `domain` uniquement ; définit `port` in/out
+** [ ] `infrastructure` implémente les ports `out` et expose les adaptateurs `in`
+** [ ] Mapping DTO ↔️ domaine dans l’infra (ou `shared.mapper`)
+** [ ] Transactions au niveau `application.usecase` si possible
+** [ ] Aucun `@Entity` en `domain` (ou alors via mapping séparé)
+
+=== 12.3 Modules (optionnel, multi-modules Maven/Gradle)
+* `votreapp-domain`
+* `votreapp-application`
+* `votreapp-infrastructure`
+* `votreapp-boot` (classe `@SpringBootApplication`)
+
+=== 12.4 Plan de migration incrémental
+* [ ] Identifier 1–2 use cases “pilotes”
+* [ ] Extraire modèles métier & services en `domain`
+* [ ] Introduire `ports` + adapter JPA en `infra.adapter.out.persistence`
+* [ ] Isoler contrôleurs/DTO en `infra.adapter.in.web`
+* [ ] Déplacer logique transversale en `configuration`/`shared`
+* [ ] CI : interdictions de dépendance (ArchUnit)
+
+== 13. ArchUnit (garde-fous)
+* [ ] Règles packages (domain sans dépendances Spring)
+* [ ] Interdiction d’accès `infrastructure` depuis `domain/application`
+* [ ] Tests de conventions (suffixes, annotations)
+
+== 14. Annexes – Exemples de signatures
+=== 14.1 Ports (extraits)
+[source,java]
+----
+package com.votreorg.votreapp.application.port.in;
+public interface CreateOrderUseCase { OrderId handle(CreateOrderCommand cmd); }
+
+package com.votreorg.votreapp.application.port.out;
+public interface LoadCustomerPort { Optional<Customer> byId(CustomerId id); }
+----
+
+=== 14.2 Use case
+[source,java]
+----
+@Service
+@Transactional
+class CreateOrderService implements CreateOrderUseCase {
+  private final LoadCustomerPort loadCustomer;
+  private final SaveOrderPort saveOrder;
+  // ...
+}
+----
+
+=== 14.3 Adapter REST (in)
+[source,java]
+----
+@RestController
+@RequestMapping("/orders")
+class OrderController {
+  private final CreateOrderUseCase createOrder;
+  // ...
+}
+----
+
+=== 14.4 Adapter JPA (out)
+[source,java]
+----
+@Repository
+class OrderJpaAdapter implements SaveOrderPort {
+  private final SpringDataOrderRepository repo;
+  // ...
+}
+----
+
+== 15. Liste d’actions
+* Court terme (0–2 semaines) :
+** [ ] _________________________________________________________________
+** [ ] _________________________________________________________________
+* Moyen terme (2–6 semaines) :
+** [ ] _________________________________________________________________
+** [ ] _________________________________________________________________
+* Long terme (> 6 semaines) :
+** [ ] _________________________________________________________________
+** [ ] _________________________________________________________________

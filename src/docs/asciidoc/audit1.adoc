@@ -1,0 +1,41 @@
+= Checklist d'audit de code Spring Boot
+:toc:
+:toc-title: Sommaire
+:!toc-placement:
+:sectnums:
+
+== Sécurité
+- [ ] Mises à jour des dépendances
+- [ ] OWASP Dependency-Check exécuté
+- [ ] Configuration de Spring Security (filtres, règles, etc.)
+- [ ] Protection contre le CSRF activée
+- [ ] Protection contre les injections SQL (requêtes paramétrées)
+- [ ] Validation et nettoyage des entrées utilisateur (XSS)
+- [ ] Secrets (mots de passe, clés) externalisés
+
+== Qualité du code et performance
+- [ ] Respect des conventions de codage
+- [ ] Gestion appropriée des exceptions
+- [ ] Couverture de tests unitaires satisfaisante (> 80%)
+- [ ] Tests d'intégration pour les chemins critiques
+- [ ] Utilisation de mocks appropriés (e.g., Mockito)
+- [ ] Détection de N+1 queries
+- [ ] Utilisation correcte des transactions (@Transactional)
+- [ ] Fermeture des ressources (flux, connexions, etc.)
+- [ ] Configuration du ThreadPool optimisée
+- [ ] Configuration de la mémoire JVM ajustée
+- [ ] Utilisation cohérente de Lombok
+
+== Structure du code et architecture
+- [ ] Structure des packages logique
+- [ ] Respect des principes SOLID
+- [ ] Faible couplage et haute cohésion
+- [ ] Code documenté (Javadoc)
+- [ ] Documentation des API (Swagger/OpenAPI) à jour
+
+== Adaptation à l'architecture hexagonale
+- [ ] Séparation claire du domaine et des couches techniques
+- [ ] Dépendances pointant vers le domaine
+- [ ] Existence d'interfaces (ports)
+- [ ] Implémentations (adapters) des interfaces
+- [ ] Structure des packages (domain, ports, adapters) conforme à l'architecture hexagonale

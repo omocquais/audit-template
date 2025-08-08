@@ -1,0 +1,32 @@
+[cols="2,8"]
+|===
+| Point d'audit | Observations
+
+| Respect des conventions de nommage Java   |
+| Présence de commentaires utiles           |
+| Code dupliqué ou mort identifié           |
+| Méthodes/classes de taille raisonnable    |
+| Séparation claire des couches             |
+| Packages correctement organisés           |
+| Bonne utilisation des annotations Spring  |
+| Validation des entrées utilisateur        |
+| Données sensibles protégées dans les logs |
+| Gestion correcte des exceptions           |
+| Dépendances à jour                        |
+| Présence de tests unitaires               |
+| Présence de tests d'intégration           |
+| Couverture de code suffisante             |
+| Usage d’outils de tests modernes          |
+| Cache bien utilisé                        |
+| Connexions à la base bien paramétrées     |
+| Gestion des transactions vérifiée         |
+| Propriétés externalisées                  |
+| Utilisation de profils Spring             |
+| Sensibilité des données de config         |
+| Bonne documentation (README, API)         |
+| Facilité de lancement local/déploiement   |
+| Structure adaptable à architecture hexagonale |
+| Packages hexagonaux respectés             |
+| Explication des choix architecturaux      |
+
+|===
